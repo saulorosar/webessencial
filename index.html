@@ -2,57 +2,208 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Web Essencial - Criação de sites profissionais, rápidos e responsivos. Solicite seu orçamento personalizado." />
-  <title>Web Essencial - Seu site pronto, rápido e profissional</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Web Essencial · Sites e análise de dados</title>
+  <meta name="description" content="Web Essencial cria sites profissionais e faz análise de dados públicos e de redes sociais para prefeituras, instituições, figuras públicas e empresas." />
+  <meta property="og:title" content="Web Essencial · Sites e análise de dados" />
+  <meta property="og:description" content="Sites rápidos e profissionais. Análise de dados que mostra o que funciona e o que o público pensa." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.webessencial.com.br/" />
+  <meta name="theme-color" content="#0f0d14" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%237c3aed'/%3E%3Cpath d='M14 22l7 22 7-16 7 16 7-22' fill='none' stroke='white' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='50' cy='22' r='4' fill='%235eead4'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <div class="container">
-      <h1>Web Essencial</h1>
-      <nav>
+  <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="topo">
+    <div class="container topo-linha">
+      <a class="marca" href="#inicio" aria-label="Web Essencial, início">
+        <span class="marca-icone" aria-hidden="true">W</span>
+        <span>Web Essencial</span>
+      </a>
+      <nav aria-label="Principal">
         <ul>
-          <li><a href="#inicio">Início</a></li>
-          <li><a href="#portfolio">Portfólio</a></li>
+          <li><a href="#solucoes">Soluções</a></li>
+          <li><a href="#como">Como trabalhamos</a></li>
           <li><a href="#contato">Contato</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <main>
-    <section id="inicio" class="hero">
-      <div class="container">
-        <h2>Seu site pronto, rápido e profissional</h2>
-        <p>A presença digital que você precisa, com a simplicidade que você quer.</p>
-        <a href="#contato" class="btn">Solicitar orçamento</a>
+  <main id="conteudo">
+    <!-- ===== Abertura ===== -->
+    <section id="inicio" class="abertura">
+      <div class="container abertura-grade">
+        <div class="abertura-texto">
+          <p class="selo">Sites · Análise de dados</p>
+          <h1>Presença digital que funciona. Dados que mostram por quê.</h1>
+          <p class="abertura-sub">Criamos sites rápidos e profissionais e analisamos dados públicos e de redes sociais para mostrar o que dá resultado, quando publicar e o que o público pensa.</p>
+          <div class="botoes">
+            <a href="#contato" class="btn btn-prim">Solicitar orçamento</a>
+            <a href="#solucoes" class="btn btn-sec">Ver soluções</a>
+          </div>
+        </div>
+
+        <figure class="painel-exemplo" aria-label="Exemplo ilustrativo de um painel de dados">
+          <div class="pe-topo">
+            <span class="pe-marca">Painel de dados</span>
+            <span class="pe-etiqueta">Exemplo ilustrativo</span>
+          </div>
+          <div class="pe-indice">
+            <div class="pe-num">128</div>
+            <div>
+              <div class="pe-rot">Desempenho do mês</div>
+              <span class="pe-chip">Acima do típico</span>
+            </div>
+          </div>
+          <div class="pe-bloco">
+            <div class="pe-rot">Curtidas por horário (mediana)</div>
+            <div class="pe-barras" role="img" aria-label="Manhã 336, almoço 382, tarde 432, noite 516">
+              <div class="pe-barra"><i style="height:54%"></i><span>Manhã</span></div>
+              <div class="pe-barra"><i style="height:62%"></i><span>Almoço</span></div>
+              <div class="pe-barra"><i style="height:70%"></i><span>Tarde</span></div>
+              <div class="pe-barra pe-destaque"><i style="height:84%"></i><span>Noite</span></div>
+            </div>
+          </div>
+          <div class="pe-bloco">
+            <div class="pe-rot">O que o público diz</div>
+            <div class="pe-clima" role="img" aria-label="72% elogios, 10% perguntas, 2% reclamações, 16% outros">
+              <i style="flex:72;background:var(--verde)"></i><i style="flex:10;background:var(--acento)"></i><i style="flex:2;background:var(--laranja)"></i><i style="flex:16;background:var(--linha-forte)"></i>
+            </div>
+            <div class="pe-legenda"><span><b style="background:var(--verde)"></b>72% elogios</span><span><b style="background:var(--acento)"></b>10% perguntas</span><span><b style="background:var(--laranja)"></b>2% reclamações</span></div>
+          </div>
+          <figcaption class="pe-leitura">“Parcerias quase dobram o alcance. Vale levar parte dos posts de sexta para terça e quarta.”</figcaption>
+        </figure>
       </div>
     </section>
 
-    <section id="portfolio" class="section">
+    <!-- ===== Soluções ===== -->
+    <section id="solucoes" class="secao">
       <div class="container">
-        <h2>Portfólio</h2>
-        <p>Veja alguns dos sites já criados (em breve)</p>
-        <!-- Adicione links ou capturas de tela aqui -->
+        <div class="secao-cabeca">
+          <p class="selo">Soluções</p>
+          <h2>Do site à análise, num lugar só</h2>
+        </div>
+        <div class="cartoes">
+          <article class="cartao">
+            <div class="cartao-icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18M8 21h8M12 18v3"/></svg>
+            </div>
+            <h3>Criação de sites</h3>
+            <p>Sites rápidos, bonitos no celular e fáceis de encontrar. Do site institucional à página de campanha ou evento.</p>
+            <ul class="lista-check">
+              <li>Visual profissional e responsivo</li>
+              <li>Carregamento rápido</li>
+              <li>Domínio próprio e manutenção</li>
+            </ul>
+          </article>
+          <article class="cartao cartao-destaque">
+            <div class="cartao-icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
+            </div>
+            <h3>Análise de redes sociais</h3>
+            <p>Estudo do desempenho de perfis em linguagem simples: o que funciona, o que ajustar e o que o público comenta.</p>
+            <ul class="lista-check">
+              <li>Assuntos, formatos e horários que rendem</li>
+              <li>Evolução ao longo do tempo</li>
+              <li>Clima dos comentários e pedidos do público</li>
+            </ul>
+          </article>
+          <article class="cartao">
+            <div class="cartao-icone" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+            </div>
+            <h3>Análise de dados públicos</h3>
+            <p>Dados abertos e informações públicas organizados em painéis e relatórios que ajudam a decidir e a prestar contas.</p>
+            <ul class="lista-check">
+              <li>Painéis com acesso restrito</li>
+              <li>Relatórios para reuniões</li>
+              <li>Comparações e séries históricas</li>
+            </ul>
+          </article>
+        </div>
       </div>
     </section>
 
-    <section id="contato" class="section">
+    <!-- ===== Para quem ===== -->
+    <section class="secao secao-alt">
       <div class="container">
-        <h2>Contato</h2>
-        <p>Entre em contato para solicitar um orçamento personalizado:</p>
-        <p><a href="mailto:webessencialcontato@gmail.com" class="btn">Enviar e-mail</a></p>
+        <div class="secao-cabeca">
+          <p class="selo">Para quem</p>
+          <h2>Feito para quem precisa ser visto e ouvir de volta</h2>
+        </div>
+        <ul class="publicos">
+          <li><strong>Prefeituras e secretarias</strong><span>Comunicação de serviços, eventos e turismo com base no que a população responde.</span></li>
+          <li><strong>Instituições e entidades</strong><span>Relatórios claros para diretoria, associados e prestação de contas.</span></li>
+          <li><strong>Figuras públicas e assessorias</strong><span>Saber quais temas e formatos aproximam o público e onde ajustar.</span></li>
+          <li><strong>Empresas e comércio local</strong><span>Site profissional e acompanhamento do que gera interesse nas redes.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===== Como trabalhamos ===== -->
+    <section id="como" class="secao">
+      <div class="container">
+        <div class="secao-cabeca">
+          <p class="selo">Como trabalhamos</p>
+          <h2>Simples do começo ao fim</h2>
+        </div>
+        <ol class="passos">
+          <li>
+            <span class="passo-num" aria-hidden="true">1</span>
+            <h3>Conversa</h3>
+            <p>Entendemos o que você precisa: um site novo, uma análise ou os dois.</p>
+          </li>
+          <li>
+            <span class="passo-num" aria-hidden="true">2</span>
+            <h3>Proposta sob medida</h3>
+            <p>Você recebe uma proposta clara, com o que será entregue e em quanto tempo.</p>
+          </li>
+          <li>
+            <span class="passo-num" aria-hidden="true">3</span>
+            <h3>Entrega e acompanhamento</h3>
+            <p>Entregamos, explicamos e seguimos por perto para ajustes e atualizações.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===== Privacidade ===== -->
+    <section class="secao secao-alt">
+      <div class="container privacidade">
+        <div class="privacidade-icone" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div>
+          <h2>Privacidade em primeiro lugar</h2>
+          <p>Trabalhamos com informações públicas e seguimos a LGPD. Nas análises, ninguém é identificado: mostramos números, assuntos e tendências, nunca a pessoa. O acesso aos resultados é restrito a cada cliente.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Contato ===== -->
+    <section id="contato" class="secao secao-contato">
+      <div class="container contato">
+        <h2>Vamos conversar?</h2>
+        <p>Peça um orçamento de site ou de análise de dados. Respondemos rapidamente.</p>
+        <div class="botoes botoes-centro">
+          <a href="mailto:webessencialcontato@gmail.com?subject=Contato%20pelo%20site" class="btn btn-prim">Enviar e-mail</a>
+        </div>
+        <p class="contato-email">webessencialcontato@gmail.com</p>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="container">
-      <p>&copy; 2025 Web Essencial. Todos os direitos reservados.</p>
-      <p>Contato: <a href="mailto:webessencialcontato@gmail.com">webessencialcontato@gmail.com</a></p>
+  <footer class="rodape">
+    <div class="container rodape-linha">
+      <p>&copy; 2026 Web Essencial. Sites e análise de dados.</p>
+      <p><a href="mailto:webessencialcontato@gmail.com">webessencialcontato@gmail.com</a> · <a href="/raiox/login/">Área do cliente</a></p>
     </div>
   </footer>
 </body>
 </html>
-
