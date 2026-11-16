@@ -105,6 +105,7 @@ nav a.link-area:hover { border-color: var(--acento); }
 
 /* cartões */
 .cartoes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.cartoes-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .cartao { background: var(--superficie); border: 1px solid var(--linha); border-radius: var(--raio); padding: 26px; display: flex; flex-direction: column; gap: 12px; }
 .cartao-destaque { border-color: rgba(167, 139, 250, .55); background: linear-gradient(180deg, rgba(124, 58, 237, .14), var(--superficie) 60%); }
 .cartao h3 { font-size: 1.3rem; }
