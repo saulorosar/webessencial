@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Raio-X · Meus painéis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,650&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #f4f5f8; --surface: #ffffff; --ink: #141925; --muted: #5d6576; --line: #e0e3ea;
+  --accent: #2343d1; --accent-soft: #e5eafc;
+  --up: #1d8148; --up-soft: #e1f2e8; --down: #c03a33; --down-soft: #fae6e4; --mid-soft: #edf0f4;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Inter", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) { :root {
+  --bg: #0e1219; --surface: #161b24; --ink: #e7eaf1; --muted: #9aa2b2; --line: #2a303c;
+  --accent: #86a0ff; --accent-soft: #1d2748;
+  --up: #52c487; --up-soft: #15301f; --down: #f17a72; --down-soft: #3a1c1b; --mid-soft: #222935; color-scheme: dark; } }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 var(--body); }
+.app { max-width: 1120px; margin: 0 auto; padding: max(24px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 56px max(16px, env(safe-area-inset-left, 0px)); display: flex; flex-direction: column; gap: 18px; }
+h1 { font-family: var(--display); font-weight: 650; margin: 0; font-size: clamp(24px, 4vw, 32px); }
+.mark { font-family: var(--display); font-weight: 650; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.topo { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 10px 20px; }
+.quem { font-size: 13px; color: var(--muted); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.sair { border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; color: var(--ink); background: var(--surface); text-decoration: none; }
+.cartoes { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr)); gap: 14px; }
+.cartao { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 14px; color: inherit; text-decoration: none; transition: border-color .2s; }
+.cartao:hover, .cartao:focus-visible { border-color: var(--accent); outline: none; }
+.cartao.down { border-color: color-mix(in srgb, var(--down) 45%, var(--line)); }
+.c-topo { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.c-nome { font-family: var(--display); font-weight: 650; font-size: 18px; line-height: 1.2; overflow-wrap: anywhere; }
+.c-perfil { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.chip { display: inline-flex; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; background: var(--mid-soft); color: var(--muted); }
+.chip.up { background: var(--up-soft); color: var(--up); } .chip.down { background: var(--down-soft); color: var(--down); }
+.c-nums { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.c-nums div { background: var(--bg); border-radius: 9px; padding: 9px 10px; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.c-nums small { font-size: 11px; color: var(--muted); }
+.c-nums b { font-family: var(--display); font-size: 20px; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.c-nums em { font-style: normal; font-size: 11px; font-weight: 600; color: var(--muted); }
+.c-nums em.up { color: var(--up); } .c-nums em.down { color: var(--down); }
+.c-nota { margin: 0; font-size: 13px; color: var(--muted); }
+.c-abrir { font-weight: 600; color: var(--accent); }
+.rodape { font-size: 12px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topo">
+    <div><div class="mark">Raio-X</div><h1>Meus painéis</h1></div>
+    <div class="quem"><span id="email"></span><a class="sair" id="sair" href="../login/">Sair</a></div>
+  </header>
+  <div class="cartoes" id="cartoes"></div>
+  <p class="rodape" id="rodape"></p>
+</div>
+<script>
+(function () {
+  const limpar = () => [sessionStorage, localStorage].forEach((st) => { try { Object.keys(st).filter((k) => k.startsWith('raiox:')).forEach((k) => st.removeItem(k)); } catch (_) {} });
+  try { const exp = +localStorage.getItem('raiox:expira') || 0; if (exp && exp < Date.now()) limpar(); } catch (_) {}
+  const ler = (k) => { try { const v = sessionStorage.getItem(k); if (v != null) return v; } catch (_) {} try { return localStorage.getItem(k); } catch (_) { return null; } };
+  let sessao = null;
+  try { sessao = JSON.parse(ler('raiox:sessao') || 'null'); } catch (_) {}
+  if (!sessao || !sessao.paineis || !sessao.paineis.length) { location.replace('../login/'); return; }
+  if (sessao.paineis.length === 1) { location.replace(`../p/${sessao.paineis[0].p}/`); return; }
+  document.getElementById('sair').addEventListener('click', limpar);
+  document.getElementById('email').textContent = sessao.email || '';
+  const NF = new Intl.NumberFormat('pt-BR');
+  const fmt = (n) => (n == null ? '—' : NF.format(n));
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const rotulo = { up: 'Acima do típico', mid: 'Dentro do típico', down: 'Abaixo do típico' };
+  let ref = null;
+  const box = document.getElementById('cartoes');
+  sessao.paineis.forEach((p) => {
+    const r = p.resumo || {};
+    if (r.ref && (!ref || r.ref > ref)) ref = r.ref;
+    const a = el('a', 'cartao' + (r.classe === 'down' ? ' down' : '')); a.href = `../p/${p.p}/`;
+    const topo = el('div', 'c-topo');
+    const nomes = el('div'); nomes.append(el('div', 'c-nome', p.nome || p.perfil), el('div', 'c-perfil', p.perfil));
+    topo.append(nomes, el('span', 'chip ' + (r.classe || ''), r.classe ? rotulo[r.classe] : 'Sem base de comparação'));
+    const nums = el('div', 'c-nums');
+    const n1 = el('div'); n1.append(el('small', null, 'Seguidores'), el('b', null, fmt(r.seguidores)));
+    const d = r.seg_delta; n1.append(el('em', d > 0 ? 'up' : d < 0 ? 'down' : '', d == null ? 'variação em breve' : `${d > 0 ? '+' : d < 0 ? '−' : ''}${fmt(Math.abs(d))} em 30 dias`));
+    const n2 = el('div'); n2.append(el('small', null, 'Posts'), el('b', null, fmt(r.posts30)), el('em', null, 'últimos 30 dias'));
+    const n3 = el('div'); n3.append(el('small', null, 'Índice'), el('b', null, r.indice != null ? fmt(r.indice) : '—'), el('em', null, 'últimos 30 dias'));
+    nums.append(n1, n2, n3);
+    a.append(topo, nums);
+    if (r.alerta) a.append(el('p', 'c-nota', r.alerta));
+    a.append(el('span', 'c-abrir', 'Abrir painel →'));
+    box.append(a);
+  });
+  if (ref) document.getElementById('rodape').textContent = `Números até ${ref.slice(8, 10)}/${ref.slice(5, 7)}/${ref.slice(0, 4)}. O índice compara os posts dos últimos 30 dias com um post típico de cada perfil (100 = típico).`;
+})();
+</script>
+</body>
+</html>

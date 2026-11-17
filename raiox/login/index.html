@@ -34,6 +34,9 @@ input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-colo
 button { font: inherit; font-weight: 600; border: 0; border-radius: 9px; padding: 12px; background: var(--accent); color: var(--on-accent); cursor: pointer; }
 button:disabled { opacity: .6; cursor: progress; }
 button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.manter { flex-direction: row; align-items: flex-start; gap: 8px; font-weight: 500; }
+.manter input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--accent); flex: none; }
+.manter small { display: block; color: var(--muted); font-size: 12px; font-weight: 400; }
 .err { background: var(--down-soft); color: var(--down); border-radius: 8px; padding: 9px 12px; font-size: 13px; }
 .foot { font-size: 12px; color: var(--muted); text-align: center; }
 </style>
@@ -42,12 +45,13 @@ button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 <main class="card">
   <div>
     <div class="mark">Raio-X</div>
-    <h1>Acesse seu painel</h1>
+    <h1>Acesse seus painéis</h1>
   </div>
-  <p>Análise de desempenho das suas redes. Entre com o e-mail e a senha que você recebeu.</p>
+  <p>Entre com o e-mail e a senha que você recebeu.</p>
   <form id="f" autocomplete="on" action="#" onsubmit="event.preventDefault()">
     <label for="u">E-mail<input id="u" name="username" type="email" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
     <label for="s">Senha<input id="s" name="password" type="password" autocomplete="current-password" required></label>
+    <label class="manter" for="m"><input id="m" type="checkbox"><span>Manter conectado neste aparelho por 30 dias<small>Use só em computador ou celular pessoal.</small></span></label>
     <div class="err" id="err" hidden></div>
     <button id="b" type="submit" disabled>Entrar</button>
   </form>
@@ -84,9 +88,18 @@ $('f').addEventListener('submit', async (e) => {
     const c = await r.json();
     const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(c.iv), additionalData: enc(arq) }, key, b64(c.ct));
     const acesso = JSON.parse(new TextDecoder().decode(pt));
-    if (!/^[a-z0-9]{10}$/.test(acesso.p)) throw new Error('acesso inválido');
-    try { sessionStorage.setItem('raiox:' + acesso.p, acesso.k); } catch (_) { showErr('O navegador bloqueou o acesso. Saia da janela anônima ou libere os dados do site.'); throw _; }
-    location.href = `../p/${acesso.p}/`;
+    const lista = (acesso.paineis || [{ p: acesso.p, k: acesso.k, nome: '', perfil: '' }]).filter((x) => /^[a-z0-9]{10}$/.test(x.p));
+    if (!lista.length) throw new Error('acesso inválido');
+    // limpa qualquer acesso anterior neste navegador e grava o novo
+    [sessionStorage, localStorage].forEach((st) => { try { Object.keys(st).filter((k) => k.startsWith('raiox:')).forEach((k) => st.removeItem(k)); } catch (_) {} });
+    const manter = $('m').checked;
+    try {
+      const st = manter ? localStorage : sessionStorage;
+      if (manter) st.setItem('raiox:expira', String(Date.now() + 30 * 86400000));
+      lista.forEach((x) => st.setItem('raiox:' + x.p, x.k));
+      st.setItem('raiox:sessao', JSON.stringify({ email, paineis: lista.map(({ k, ...resto }) => resto) }));
+    } catch (_) { showErr('O navegador bloqueou o acesso. Saia da janela anônima ou libere os dados do site.'); throw _; }
+    location.href = lista.length === 1 ? `../p/${lista[0].p}/` : '../meus/';
   } catch (err) {
     if ($('err').hidden) showErr('E-mail ou senha incorretos.');
     $('b').disabled = false; $('b').textContent = 'Entrar';

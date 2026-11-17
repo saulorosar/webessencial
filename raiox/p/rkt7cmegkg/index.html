@@ -18,12 +18,20 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; font: 1
   const slug = location.pathname.replace(/\/+$/, '').split('/').pop().toLowerCase();
   const goLogin = () => location.replace('../../login/');
   const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  const limparTudo = () => [sessionStorage, localStorage].forEach((st) => { try { Object.keys(st).filter((k) => k.startsWith('raiox:')).forEach((k) => st.removeItem(k)); } catch (_) {} });
+  try { const exp = +localStorage.getItem('raiox:expira') || 0; if (exp && exp < Date.now()) limparTudo(); } catch (_) {}
   let raw = null;
   try { raw = sessionStorage.getItem('raiox:' + slug); } catch (_) {}
+  if (!raw) { try { raw = localStorage.getItem('raiox:' + slug); } catch (_) {} }
   if (!raw) { goLogin(); return; }
   let p = null;
   for (let i = 0; i < 3 && !p; i++) {
-    try { const r = await fetch('dados.enc.json', { cache: 'no-store' }); if (r.ok) p = await r.json(); } catch (_) {}
+    try {
+      const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 15000);
+      const r = await fetch('dados.enc.json', { cache: 'no-store', signal: ctl.signal });
+      if (r.ok) p = await r.json();
+      clearTimeout(t);
+    } catch (_) {}
     if (!p) await new Promise((ok) => setTimeout(ok, 700 * (i + 1)));
   }
   if (!p) {
@@ -38,7 +46,7 @@ body { margin: 0; min-height: 100vh; display: grid; place-items: center; font: 1
     const html = new TextDecoder().decode(pt);
     document.open(); document.write(html); document.close();
   } catch (_) {
-    try { sessionStorage.removeItem('raiox:' + slug); } catch (__) {}
+    [sessionStorage, localStorage].forEach((st) => { try { st.removeItem('raiox:' + slug); } catch (__) {} });
     goLogin();
   }
 })();
