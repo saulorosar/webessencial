@@ -84,7 +84,7 @@ h1 { font-family: var(--display); font-weight: 650; margin: 0; font-size: clamp(
     topo.append(nomes, el('span', 'chip ' + (r.classe || ''), r.classe ? rotulo[r.classe] : 'Sem base de comparação'));
     const nums = el('div', 'c-nums');
     const n1 = el('div'); n1.append(el('small', null, 'Seguidores'), el('b', null, fmt(r.seguidores)));
-    const d = r.seg_delta; n1.append(el('em', d > 0 ? 'up' : d < 0 ? 'down' : '', d == null ? 'variação em breve' : `${d > 0 ? '+' : d < 0 ? '−' : ''}${fmt(Math.abs(d))} em 30 dias`));
+    const d = r.seg_delta; n1.append(el('em', d > 0 ? 'up' : d < 0 ? 'down' : '', d == null ? 'variação na próxima coleta' : `${d > 0 ? '+' : d < 0 ? '−' : ''}${fmt(Math.abs(d))} desde ${(r.seg_desde || '').slice(8, 10)}/${(r.seg_desde || '').slice(5, 7)}`));
     const n2 = el('div'); n2.append(el('small', null, 'Posts'), el('b', null, fmt(r.posts30)), el('em', null, 'últimos 30 dias'));
     const n3 = el('div'); n3.append(el('small', null, 'Índice'), el('b', null, r.indice != null ? fmt(r.indice) : '—'), el('em', null, 'últimos 30 dias'));
     nums.append(n1, n2, n3);
