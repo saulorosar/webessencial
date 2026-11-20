@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Raio-X</title>
+<style>
+body { margin: 0; min-height: 100vh; display: grid; place-items: center; font: 15px/1.5 "Segoe UI", system-ui, sans-serif; background: #f4f5f8; color: #5d6576; }
+@media (prefers-color-scheme: dark) { body { background: #0e1219; color: #9aa2b2; } }
+</style>
+</head>
+<body>
+<p id="msg">Abrindo o painel…</p>
+<noscript><p>Ative o JavaScript para abrir o painel.</p></noscript>
+<script>
+(async () => {
+  const slug = location.pathname.replace(/\/+$/, '').split('/').pop().toLowerCase();
+  const goLogin = () => location.replace('../../login/');
+  const b64 = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+  const limparTudo = () => [sessionStorage, localStorage].forEach((st) => { try { Object.keys(st).filter((k) => k.startsWith('raiox:')).forEach((k) => st.removeItem(k)); } catch (_) {} });
+  try { const exp = +localStorage.getItem('raiox:expira') || 0; if (exp && exp < Date.now()) limparTudo(); } catch (_) {}
+  let raw = null;
+  try { raw = sessionStorage.getItem('raiox:' + slug); } catch (_) {}
+  if (!raw) { try { raw = localStorage.getItem('raiox:' + slug); } catch (_) {} }
+  if (!raw) { goLogin(); return; }
+  let p = null;
+  for (let i = 0; i < 3 && !p; i++) {
+    try {
+      const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 15000);
+      const r = await fetch('dados.enc.json', { cache: 'no-store', signal: ctl.signal });
+      if (r.ok) p = await r.json();
+      clearTimeout(t);
+    } catch (_) {}
+    if (!p) await new Promise((ok) => setTimeout(ok, 700 * (i + 1)));
+  }
+  if (!p) {
+    const m = document.getElementById('msg');
+    m.textContent = 'Não foi possível abrir o painel agora. ';
+    const a = document.createElement('a'); a.href = ''; a.textContent = 'Tentar de novo'; m.append(a);
+    return;
+  }
+  try {
+    const key = await crypto.subtle.importKey('raw', b64(raw), 'AES-GCM', false, ['decrypt']);
+    const pt = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: b64(p.iv), additionalData: new TextEncoder().encode(slug) }, key, b64(p.ct));
+    const html = new TextDecoder().decode(pt);
+    document.open(); document.write(html); document.close();
+  } catch (_) {
+    [sessionStorage, localStorage].forEach((st) => { try { st.removeItem('raiox:' + slug); } catch (__) {} });
+    goLogin();
+  }
+})();
+</script>
+</body>
+</html>
